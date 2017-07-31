@@ -72,7 +72,7 @@ function submitCurrent() {
         console.log("Credit Hours are");
         console.log(creditHours);
 
-        updateTable("Current GPA", "", currentGPA.toFixed(2), currentCreditHours, currentCreditQuality);
+        updateTable("Current GPA", "", currentGPA.toFixedDown(2), currentCreditHours, currentCreditQuality);
         var gpa = (effectiveCreditHours/creditHours);
         console.log("Current GPA is");
         console.log(gpa);
@@ -83,6 +83,11 @@ function submitCurrent() {
 
 }
 
+Number.prototype.toFixedDown = function(digits) {
+    var re = new RegExp("(\\d+\\.\\d{" + digits + "})(\\d)"),
+        m = this.toString().match(re);
+    return m ? parseFloat(m[1]) : this.valueOf();
+};
 
 
 function resetPage(){
@@ -144,7 +149,7 @@ function clearTable(){
 
 function updateGPA(gpa){
     var gpaDom = document.getElementById("gpa");
-    gpaDom.innerHTML = "Estimated GPA is " + gpa.toFixed(2).toString();
+    gpaDom.innerHTML = "Estimated GPA is " + gpa.toFixedDown(2).toString();
 }
 
 function clearGPA(){
