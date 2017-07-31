@@ -44,12 +44,55 @@ function submitGPA() {
     clearFormFields();
 }
 
+function submitCurrent() {
+
+    var currentCreditHours = parseFloat(document.getElementById("chours").value);
+    var currentCreditQuality = parseFloat(document.getElementById("cquality").value);
+
+    var currentGPA = currentCreditQuality / currentCreditHours;
+
+    if (isNaN(currentCreditHours) || isNaN(currentCreditQuality)) {
+        clearCurrentGPAForm();
+        alert("Invalid Current GPA");
+    } else {
+        if (typeof(effectiveCreditHours) === "undefined") {
+            effectiveCreditHours = currentCreditQuality
+        } else {
+            effectiveCreditHours = effectiveCreditHours + currentCreditQuality
+        }
+
+        if (typeof(creditHours) === "undefined") {
+            creditHours = currentCreditHours
+        } else {
+            creditHours = creditHours + currentCreditHours
+        }
+
+        console.log("Effective Credit Hours are");
+        console.log(effectiveCreditHours);
+        console.log("Credit Hours are");
+        console.log(creditHours);
+
+        updateTable("Current GPA", "", currentGPA.toFixed(2), currentCreditHours, currentCreditQuality);
+        var gpa = (effectiveCreditHours/creditHours);
+        console.log("Current GPA is");
+        console.log(gpa);
+        updateGPA(gpa);
+        clearCurrentGPAForm();
+        hideCurrentGPAForm();
+    }
+
+}
+
+
+
 function resetPage(){
     effectiveCreditHours = undefined;
     creditHours = undefined;
     clearTable();
     clearGPA();
     clearFormFields();
+    clearCurrentGPAForm();
+    restoreCurrentGPAForm();
 }
 
 
@@ -111,4 +154,18 @@ function clearGPA(){
 
 function clearFormFields(){
     document.getElementById("gpaForm").reset();
+}
+
+function clearCurrentGPAForm(){
+    document.getElementById("initGPA").reset();
+}
+
+function hideCurrentGPAForm(){
+    document.getElementById("initial").style.display = "none";
+    document.getElementById("initButton").style.display = "none";
+}
+
+function restoreCurrentGPAForm(){
+    document.getElementById("initial").style.display = "";
+    document.getElementById("initButton").style.display = "";
 }
